@@ -1,6 +1,7 @@
-package com.example.flightsearcher.flight.presentation.airport_list.components
+package com.example.flightsearcher.flight.presentation.flight_search_screen.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,8 @@ import com.example.flightsearcher.flight.presentation.model.AirportUi
 
 @Composable
 fun AirportListItem(
-    airport: AirportUi
+    airport: AirportUi,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -29,7 +31,8 @@ fun AirportListItem(
                 color = Color.LightGray,
                 shape = RoundedCornerShape(6.dp)
             )
-            .padding(4.dp),
+            .padding(4.dp)
+            .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.Top
     ) {

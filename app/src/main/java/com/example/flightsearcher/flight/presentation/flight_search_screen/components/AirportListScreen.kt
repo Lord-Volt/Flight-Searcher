@@ -1,4 +1,4 @@
-package com.example.flightsearcher.flight.presentation.airport_list
+package com.example.flightsearcher.flight.presentation.flight_search_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,14 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.example.flightsearcher.flight.presentation.airport_list.components.AirportListItem
 import com.example.flightsearcher.flight.presentation.model.AirportUi
 import com.example.flightsearcher.ui.theme.FlightSearcherTheme
-import com.yourapp.ui.preview.sampleAirports
+import com.example.flightsearcher.flight.presentation.sampleAirports
 
 @Composable
 fun AirportListScreen(
     airports: List<AirportUi>,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -29,6 +29,7 @@ fun AirportListScreen(
         items(airports) { airport ->
             AirportListItem(
                 airport = airport,
+                onClick = onClick
             )
         }
     }
@@ -40,6 +41,7 @@ private fun AirportListScreenPreview() {
     FlightSearcherTheme {
         AirportListScreen(
             airports = sampleAirports,
+            onClick = {},
             modifier = Modifier
                 .background(color = Color.White)
                 .fillMaxSize()
