@@ -4,6 +4,8 @@ import com.example.flightsearcher.flight.presentation.model.AirportUi
 import com.example.flightsearcher.flight.presentation.model.FlightUi
 
 data class FlightSearchState(
-    val selectedAirport: AirportUi,
-    val selectedAirportFlights: List<FlightUi>
+    val airports: List<AirportUi> = emptyList(),
+    val searchText: String,
+    val selectedAirport: AirportUi?,
+    val selectedAirportFlights: List<FlightUi>?
 )
