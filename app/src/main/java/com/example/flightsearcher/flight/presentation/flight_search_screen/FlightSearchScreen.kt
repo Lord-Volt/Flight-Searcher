@@ -1,6 +1,7 @@
 package com.example.flightsearcher.flight.presentation.flight_search_screen
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import com.example.flightsearcher.flight.presentation.flight_search_screen.components.AirportListScreen
 import com.example.flightsearcher.flight.presentation.flight_search_screen.components.FlightListScreen
 import com.example.flightsearcher.flight.presentation.flight_search_screen.components.FlightSearchTopBar
@@ -28,25 +30,24 @@ fun FlightSearchScreen(
     val themeColors = if(isSystemInDarkTheme()) darkThemeColors else lightThemeColors
     val theme = LocalTheme.current
     Scaffold(
-        topBar = { FlightSearchTopBar() },
+        topBar = { FlightSearchTopBar() }, // maybe add dark light toggle
         containerColor = theme.surface,
         contentColor = theme.surfaceLight
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             SearchField(
                 searchText = state.searchText,
-                onValueChange = {},
-                modifier = Modifier.padding(innerPadding)
+                onValueChange = {}
             )
             if (state.selectedAirport == null) {
                 AirportListScreen(
                     airports = state.airports,
-                    onClick = { },
-                    modifier = Modifier.padding(innerPadding)
+                    onClick = { }
                 )
             } else {
                 FlightListScreen(
@@ -68,10 +69,7 @@ fun FlightSearchScreenPreview() {
                 state = FlightSearchState(
                     airports = sampleAirports,
                     searchText = "PUT TEXT HERE TO SEARCH!!!",
-                    selectedAirport = AirportUi(
-                        airportCode = "JFK",
-                        airportName = "John F. Kennedy International Airport"
-                    ),
+                    selectedAirport =  null,
                     selectedAirportFlights = sampleFlights
                 )
             )

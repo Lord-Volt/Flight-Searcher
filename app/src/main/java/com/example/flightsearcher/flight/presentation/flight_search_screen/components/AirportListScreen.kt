@@ -25,9 +25,12 @@ fun AirportListScreen(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val theme = LocalTheme.current
     LazyColumn(
         modifier = modifier
-            .padding(8.dp),
+            .background(color = theme.surface)
+            .fillMaxSize()
+            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(airports) { airport ->
@@ -49,10 +52,7 @@ private fun AirportListScreenPreview() {
         FlightSearcherTheme {
             AirportListScreen(
                 airports = sampleAirports,
-                onClick = {},
-                modifier = Modifier
-                    .background(color = themeColors.surface)
-                    .fillMaxSize()
+                onClick = {}
             )
         }
     }

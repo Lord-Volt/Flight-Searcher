@@ -4,6 +4,7 @@
     <bytecodeTargetLevel>
       <module name="Flight Searcher.Flight_Searcher.app" target="21" />
       <module name="Flight_Searcher.app" target="21" />
+      <module name="FlightSearcher.Flight_Searcher.app" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>
