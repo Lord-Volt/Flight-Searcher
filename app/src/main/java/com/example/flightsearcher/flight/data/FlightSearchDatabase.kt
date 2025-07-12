@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [AirportEntity::class, FavoriteEntity::class],
+    entities = [AirportEntity::class, FavoriteFlightEntity::class],
     version = 1
 )
 abstract class FlightSearchDatabase: RoomDatabase() {

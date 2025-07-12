@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -103,9 +103,9 @@ fun FlightListItem(
                 onClick = onClick,
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Star, // need to check if favorite or not
-                    contentDescription = "Favorite",
-                    tint = theme.buttonPrimary
+                    imageVector = if(flight.isFavorite) Icons.Filled.Star else Icons.Filled.Star,
+                    contentDescription = if(flight.isFavorite) "Unfavorite" else "Favorite",
+                    tint = if(flight.isFavorite) theme.buttonPrimary else theme.buttonDisabled // Check if look good
                 )
             }
         }
@@ -123,7 +123,8 @@ private fun FlightListItemPreview() {
                     departureAirportCode = "JFK",
                     departureAirportName = "John F. Kennedy International Airport",
                     arrivalAirportCode = "LAX",
-                    arrivalAirportName = "Los Angeles International Airport"
+                    arrivalAirportName = "Los Angeles International Airport",
+                    isFavorite = false
                 ),
                 onClick = {}
             )

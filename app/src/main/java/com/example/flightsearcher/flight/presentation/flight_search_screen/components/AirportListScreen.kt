@@ -22,7 +22,7 @@ import com.example.flightsearcher.ui.theme.lightThemeColors
 @Composable
 fun AirportListScreen(
     airports: List<AirportUi>,
-    onClick: () -> Unit,
+    onClick: (AirportUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val theme = LocalTheme.current
@@ -36,7 +36,7 @@ fun AirportListScreen(
         items(airports) { airport ->
             AirportListItem(
                 airport = airport,
-                onClick = onClick
+                onClick = { onClick(airport) }
             )
         }
     }

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.flightsearcher.flight.presentation.flight_search_screen.FlightSearchState
 import com.example.flightsearcher.flight.presentation.model.AirportUi
+import com.example.flightsearcher.flight.presentation.model.FlightUi
 import com.example.flightsearcher.flight.presentation.sampleFlights
 import com.example.flightsearcher.ui.theme.FlightSearcherTheme
 import com.example.flightsearcher.ui.theme.LocalTheme
@@ -27,7 +28,7 @@ import com.example.flightsearcher.ui.theme.lightThemeColors
 @Composable
 fun FlightListScreen(
     state: FlightSearchState,
-    onClick: () -> Unit,
+    onClick: (FlightUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val theme = LocalTheme.current
@@ -52,7 +53,7 @@ fun FlightListScreen(
                 items(state.selectedAirportFlights) { flight ->
                     FlightListItem(
                         flight = flight,
-                        onClick = onClick
+                        onClick = { onClick(flight) }
                     )
                 }
             }
@@ -70,7 +71,7 @@ fun FlightListScreenPreview() {
                 state = FlightSearchState(
                     selectedAirport = AirportUi("JFK", "John F. Kennedy International Airport"),
                     selectedAirportFlights = sampleFlights,
-                    searchText = ""
+                    searchFieldText = ""
                 ),
                 onClick = { }
             )
