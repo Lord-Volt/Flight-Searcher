@@ -10,6 +10,14 @@
       </SelectionState>
       <SelectionState runConfigName="FlightSearcher.Flight_Searcher.app">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2025-07-14T12:30:01.507735982Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=5T4DQ8UWRKV8WGDY" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>

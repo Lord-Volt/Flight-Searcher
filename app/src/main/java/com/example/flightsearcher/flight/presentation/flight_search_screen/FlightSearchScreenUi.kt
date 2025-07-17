@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,15 +34,15 @@ fun FlightSearchScreenUi(
 ) {
     val theme = LocalTheme.current
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = { FlightSearchTopBar() }, // maybe add dark light toggle
-        containerColor = theme.surface,
-        contentColor = theme.surfaceLight
+        containerColor = theme.surface
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
             SearchField(
                 searchText = state.searchFieldText,

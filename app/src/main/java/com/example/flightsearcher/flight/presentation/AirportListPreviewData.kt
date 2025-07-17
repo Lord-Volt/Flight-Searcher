@@ -15,29 +15,29 @@ val sampleFlights = listOf(
     FlightUi(
         departureAirportCode = "JFK",
         departureAirportName = "John F. Kennedy International Airport",
-        arrivalAirportCode = "LAX",
-        arrivalAirportName = "Los Angeles International Airport",
+        destinationAirportCode = "LAX",
+        destinationAirportName = "Los Angeles International Airport",
         isFavorite = false
     ),
     FlightUi(
         departureAirportCode = "JFK",
         departureAirportName = "John F. Kennedy International Airport",
-        arrivalAirportCode = "ORD",
-        arrivalAirportName = "O'Hare International Airport",
+        destinationAirportCode = "ORD",
+        destinationAirportName = "O'Hare International Airport",
         isFavorite = false
     ),
     FlightUi(
         departureAirportCode = "JFK",
         departureAirportName = "John F. Kennedy International Airport",
-        arrivalAirportCode = "ATL",
-        arrivalAirportName = "Hartsfield–Jackson Atlanta International Airport",
+        destinationAirportCode = "ATL",
+        destinationAirportName = "Hartsfield–Jackson Atlanta International Airport",
         isFavorite = false
     ),
     FlightUi(
         departureAirportCode = "JFK",
         departureAirportName = "John F. Kennedy International Airport",
-        arrivalAirportCode = "DFW",
-        arrivalAirportName = "Dallas/Fort Worth International Airport",
+        destinationAirportCode = "DFW",
+        destinationAirportName = "Dallas/Fort Worth International Airport",
         isFavorite = true
     )
 )

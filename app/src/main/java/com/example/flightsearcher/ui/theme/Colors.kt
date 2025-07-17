@@ -26,7 +26,7 @@ val lightThemeColors = CustomTheme(
     iconInverse = Color.White,           // icons on blue backgrounds
     borderPrimary = Color(0xFF999999),   // subtle border/outline
     borderError = Color(0xFFB00020),     // standard error red
-    buttonPrimary = Color(0xFF2962FF),   // strong blue
+    buttonPrimary = Color(0xFF0031B6),   // strong blue
     buttonDisabled = Color(0xFFBDBDBD),  // gray for disabled states
     isLight = true
 )
@@ -40,7 +40,7 @@ val darkThemeColors = CustomTheme(
     iconInverse = Color.Black,               // icons on light buttons
     borderPrimary = Color(0xFF555555),       // soft border for cards/inputs
     borderError = Color(0xFFCF6679),         // Material dark error color
-    buttonPrimary = Color(0xFF2962FF),       // vibrant blue for action buttons
+    buttonPrimary = Color(0xFF0031B6),       // vibrant blue for action buttons
     buttonDisabled = Color(0xFF555555),      // muted gray for disabled states
     isLight = false
 )

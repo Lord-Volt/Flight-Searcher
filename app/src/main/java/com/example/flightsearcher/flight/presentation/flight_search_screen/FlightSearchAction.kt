@@ -7,4 +7,5 @@ sealed interface FlightSearchAction {
     data class OnSearchFieldChange(val searchText: String) : FlightSearchAction
     data class OnAirportClick(val airport: AirportUi) : FlightSearchAction
     data class OnFavoriteClick(val flight: FlightUi) : FlightSearchAction
+    data object OnClearSearch : FlightSearchAction
 }

@@ -81,14 +81,14 @@ fun FlightListItem(
             )
             Row {
                 Text(
-                    text = flight.arrivalAirportCode + " ",
+                    text = flight.destinationAirportCode + " ",
                     fontWeight = FontWeight.ExtraBold,
                     fontFamily = FontFamily.Monospace,
                     color = theme.textPrimary,
                     fontSize = 14.sp
                 )
                 Text(
-                    text = flight.arrivalAirportName, // limit if too long
+                    text = flight.destinationAirportName, // limit if too long
                     color = theme.textPrimary,
                     fontSize = 14.sp
                 )
@@ -122,8 +122,8 @@ private fun FlightListItemPreview() {
                 flight = FlightUi(
                     departureAirportCode = "JFK",
                     departureAirportName = "John F. Kennedy International Airport",
-                    arrivalAirportCode = "LAX",
-                    arrivalAirportName = "Los Angeles International Airport",
+                    destinationAirportCode = "LAX",
+                    destinationAirportName = "Los Angeles International Airport",
                     isFavorite = false
                 ),
                 onClick = {}
