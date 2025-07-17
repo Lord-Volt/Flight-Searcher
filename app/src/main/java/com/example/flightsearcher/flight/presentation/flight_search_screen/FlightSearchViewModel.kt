@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flightsearcher.flight.data.FlightGenerator
 import com.example.flightsearcher.flight.data.FlightSearchDao
+import com.example.flightsearcher.flight.data.UserPreferencesRepository
 import com.example.flightsearcher.flight.data.mapper.toAirport
 import com.example.flightsearcher.flight.data.mapper.toAirportUi
 import com.example.flightsearcher.flight.data.mapper.toFlightUi
@@ -16,12 +17,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FlightSearchViewModel(
-    private val dao: FlightSearchDao
+    private val dao: FlightSearchDao,
+    private val userPreferencesRepository: UserPreferencesRepository
 ): ViewModel() {
 
     private val _state = MutableStateFlow(FlightSearchState())
     val state = _state.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            userPreferencesRepository.searchFieldText.collect { savedText ->
+                onAction(FlightSearchAction.OnSearchFieldChange(savedText))
+            }
+        }
+    }
     fun onAction(action: FlightSearchAction) {
         when(action) {
             is FlightSearchAction.OnAirportClick -> {
@@ -51,8 +60,6 @@ class FlightSearchViewModel(
             }
 
             is FlightSearchAction.OnSearchFieldChange -> {
-                Log.d("Text", action.searchText)
-
                 if (action.searchText.isNotEmpty()) {
                     _state.update {
                         it.copy(
@@ -61,6 +68,11 @@ class FlightSearchViewModel(
                             selectedAirportFlights = emptyList()
                         )
                     }
+
+                    viewModelScope.launch {
+                        userPreferencesRepository.saveSearchFieldData(action.searchText)
+                    }
+
                     viewModelScope.launch(Dispatchers.IO) {
                         val airports = dao.getAirportsByQueryOrderedByPassengers(action.searchText)
                             .map { it.toAirport().toAirportUi() }
@@ -83,6 +95,9 @@ class FlightSearchViewModel(
                         selectedAirport = null,
                         selectedAirportFlights = null
                     )
+                }
+                viewModelScope.launch {
+                    userPreferencesRepository.saveSearchFieldData("")
                 }
             }
         }
