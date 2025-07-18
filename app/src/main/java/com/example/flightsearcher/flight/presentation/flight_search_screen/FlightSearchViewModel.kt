@@ -1,6 +1,5 @@
 package com.example.flightsearcher.flight.presentation.flight_search_screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.flightsearcher.flight.data.FlightGenerator
@@ -8,10 +7,19 @@ import com.example.flightsearcher.flight.data.FlightSearchDao
 import com.example.flightsearcher.flight.data.UserPreferencesRepository
 import com.example.flightsearcher.flight.data.mapper.toAirport
 import com.example.flightsearcher.flight.data.mapper.toAirportUi
+import com.example.flightsearcher.flight.data.mapper.toFavoriteFlightEntity
+import com.example.flightsearcher.flight.data.mapper.toFlight
 import com.example.flightsearcher.flight.data.mapper.toFlightUi
+import com.example.flightsearcher.flight.presentation.model.FlightUi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,10 +32,30 @@ class FlightSearchViewModel(
     private val _state = MutableStateFlow(FlightSearchState())
     val state = _state.asStateFlow()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val favoriteFlights: StateFlow<List<FlightUi>> = dao.getAllFavorites()
+        .transformLatest { flightEntities ->
+            val favoriteFlightsUi = mutableListOf<FlightUi>()
+            for (it in flightEntities) {
+                val flightDomain = it.toFlight(dao)
+                val flightUi = flightDomain.toFlightUi(dao)
+                favoriteFlightsUi.add(flightUi)
+            }
+            emit(favoriteFlightsUi)
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = emptyList()
+        )
+
     init {
         viewModelScope.launch {
-            userPreferencesRepository.searchFieldText.collect { savedText ->
-                onAction(FlightSearchAction.OnSearchFieldChange(savedText))
+            val savedSearchText = userPreferencesRepository.searchFieldText.first()
+            if (savedSearchText.isEmpty()) {
+                onAction(FlightSearchAction.OnClearSearch)
+            } else {
+                onAction(FlightSearchAction.OnSearchFieldChange(savedSearchText))
             }
         }
     }
@@ -45,18 +73,43 @@ class FlightSearchViewModel(
 
                     val flights = FlightGenerator()
                         .generateFlightsFromAirport(action.airport.toAirport(), airports)
-                        .map { it.toFlightUi() }
+                        .map { it.toFlightUi(
+                            dao = dao
+                        ) }
 
                     withContext(Dispatchers.Main) {
                         _state.update { it.copy(
-                            selectedAirportFlights = flights
+                            airportFlights = flights
                         ) }
                     }
                 }
             }
 
             is FlightSearchAction.OnFavoriteClick -> {
+                val flightUiToToggle = action.flight
+                val newFavoriteState = !flightUiToToggle.isFavorite
 
+                viewModelScope.launch {
+                    val flightEntity = flightUiToToggle.toFlight().toFavoriteFlightEntity()
+                    if (newFavoriteState) {
+                        dao.addFavorite(flightEntity)
+                    } else {
+                        dao.removeFavorite(dao.getFavorite(flightUiToToggle.departureAirportCode, flightUiToToggle.destinationAirportCode))
+                    }
+
+                    withContext(Dispatchers.Main) {
+                        _state.update { state ->
+                            val updatedFlights = state.airportFlights.map { flightUi ->
+                                if (flightUi.departureAirportCode == flightUiToToggle.departureAirportCode && flightUi.destinationAirportCode == flightUiToToggle.destinationAirportCode) {
+                                    flightUi.copy(isFavorite = newFavoriteState)
+                                } else {
+                                    flightUi
+                                }
+                            }
+                            state.copy(airportFlights = updatedFlights)
+                        }
+                    }
+                }
             }
 
             is FlightSearchAction.OnSearchFieldChange -> {
@@ -65,7 +118,7 @@ class FlightSearchViewModel(
                         it.copy(
                             searchFieldText = action.searchText,
                             selectedAirport = null,
-                            selectedAirportFlights = emptyList()
+                            airportFlights = emptyList()
                         )
                     }
 
@@ -93,7 +146,7 @@ class FlightSearchViewModel(
                         airports = emptyList(),
                         searchFieldText = "",
                         selectedAirport = null,
-                        selectedAirportFlights = null
+                        airportFlights = favoriteFlights.value
                     )
                 }
                 viewModelScope.launch {

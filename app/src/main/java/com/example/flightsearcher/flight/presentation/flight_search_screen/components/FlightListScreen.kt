@@ -32,33 +32,38 @@ fun FlightListScreen(
     modifier: Modifier = Modifier
 ) {
     val theme = LocalTheme.current
-    if (state.selectedAirportFlights != null && state.selectedAirport != null) {
-        Column(
-            modifier = modifier
-                .background(color = theme.surface)
-                .fillMaxSize()
-                .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
-        ) {
+    Column(
+        modifier = modifier
+            .background(color = theme.surface)
+            .fillMaxSize()
+            .padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
+    ) {
+        if (state.airportFlights.isNotEmpty()) {
             Text(
-                text = "Flights from ${state.selectedAirport.airportCode}",
+                text = if (state.selectedAirport != null) {
+                    "Flights from ${state.selectedAirport.airportCode}"
+                } else {
+                    "Favorite routes"
+                },
                 fontWeight = FontWeight.Bold,
                 color = theme.textPrimary,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp)
             )
-            LazyColumn(
-                modifier = Modifier,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(state.selectedAirportFlights) { flight ->
-                    FlightListItem(
-                        flight = flight,
-                        onClick = { onClick(flight) }
-                    )
-                }
+        }
+        LazyColumn(
+            modifier = Modifier,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(state.airportFlights) { flight ->
+                FlightListItem(
+                    flight = flight,
+                    onClick = { onClick(flight) }
+                )
             }
         }
     }
+
 }
 
 @PreviewLightDark
@@ -70,7 +75,7 @@ fun FlightListScreenPreview() {
             FlightListScreen(
                 state = FlightSearchState(
                     selectedAirport = AirportUi("JFK", "John F. Kennedy International Airport"),
-                    selectedAirportFlights = sampleFlights,
+                    airportFlights = sampleFlights,
                     searchFieldText = ""
                 ),
                 onClick = { }

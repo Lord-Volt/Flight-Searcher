@@ -7,5 +7,5 @@ data class FlightSearchState(
     val airports: List<AirportUi> = emptyList(),
     val searchFieldText: String = "",
     val selectedAirport: AirportUi? = null,
-    val selectedAirportFlights: List<FlightUi>? = null
+    val airportFlights: List<FlightUi> = emptyList()
 )

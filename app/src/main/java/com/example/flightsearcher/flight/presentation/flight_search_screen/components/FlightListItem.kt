@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -105,7 +106,8 @@ fun FlightListItem(
                 Icon(
                     imageVector = if(flight.isFavorite) Icons.Filled.Star else Icons.Filled.Star,
                     contentDescription = if(flight.isFavorite) "Unfavorite" else "Favorite",
-                    tint = if(flight.isFavorite) theme.buttonPrimary else theme.buttonDisabled // Check if look good
+                    tint = if(flight.isFavorite) theme.buttonPrimary else theme.buttonDisabled,
+                    modifier = Modifier.size(36.dp)
                 )
             }
         }
